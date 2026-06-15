@@ -391,10 +391,10 @@ Healthcheck pings MongoDB every 10s — backend only starts after MongoDB passes
 - [x] Verify all ports with `docker compose ps`
 - [x] Test backend health with `curl http://localhost:5000/health`
 - [x] Create items via curl and verify in browser
-- [ ] Run `docker compose down -v` then `up --build` — confirm data is wiped
-- [ ] Run `docker compose down` then `up` — confirm data persists
-- [ ] Shell into backend — confirm `npm` doesn't exist in production image
-- [ ] **Bonus:** Add a `/items/count` route to backend that returns total item count
+- [x] Run `docker compose down -v` then `up --build` — confirm data is wiped
+- [x] Run `docker compose down` then `up` — confirm data persists
+- [x] Shell into backend — confirm `npm` doesn't exist in production image
+- [x] **Bonus:** Add a `/items/count` route to backend that returns total item count
 
 ---
 
