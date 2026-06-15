@@ -1,0 +1,14 @@
+FROM python:3.11-slim
+
+WORKDIR /app
+
+COPY requirements.txt .
+
+RUN pip install -r requirements.txt 
+
+COPY data_service.py .
+
+EXPOSE 5001
+
+CMD ["python", "data_service.py"]
+
