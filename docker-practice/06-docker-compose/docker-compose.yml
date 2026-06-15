@@ -1,0 +1,55 @@
+services:
+
+  data-service:
+    build:
+      context: ./data
+      dockerfile: Dockerfile.data
+    container_name: data-service                # Good for learning but in production many teams avoid! 
+    networks:
+      - ml-network
+    healthcheck:
+      test: ["CMD", "python3", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:5001/health')"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+
+  ml-api:
+    build:
+      context: ./api
+      dockerfile: Dockerfile.api
+    container_name: ml-api
+    ports:
+      - "8080:5000"
+    environment:
+      - DATA_SERVICE_URL=http://data-service:5001
+      - APP_ENV=development
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+    networks:
+      - ml-network
+    depends_on:
+      data-service:
+        condition: service_healthy
+
+  redis:
+    image: redis:7
+    container_name: redis
+    networks:
+      - ml-network
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+    restart: unless-stopped
+    volumes:
+      - redis-data:/data
+
+      
+
+networks:
+  ml-network:
+    driver: bridge
+
+volumes:
+  redis-data:
